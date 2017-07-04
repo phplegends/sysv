@@ -1,0 +1,21 @@
+{
+    "name": "phplegends/semaphore",
+    "description": "This library is a API This for PHP module that provides wrappers for the System V IPC family of functions. It includes semaphores, shared memory and inter-process messaging (IPC).",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Wallace de Souza",
+            "email": "wallace.souza@grupotmt.com.br"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "phpunit/phpunit": "^5.7"
+    },
+    "autoload" : {
+        "psr-4" : {
+            "PHPLegeds\\Semaphore\\" : "src/"
+        }
+    }
+}
