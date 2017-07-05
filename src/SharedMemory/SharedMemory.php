@@ -2,7 +2,7 @@
 
 namespace PHPLegends\Semaphore\SharedMemory;
 
-use PHPLegends\Semaphore\Exceptions\Exception as BaseException;
+use PHPLegends\Semaphore\Exceptions\SharedMemoryException;
 
 class SharedMemory
 {
@@ -11,14 +11,32 @@ class SharedMemory
     */
     protected $resource = null;
 
+    protected $attach;
+
+    /**
+     * @param int $key
+     * @param int $memsize
+     * @param int $perm
+    */
     public function __construct($key, $memsize = 10000, $perm = 0666)
     {
+        $memsize = (int) $memsize;
+
+        if ($memsize <= 0) {
+
+            throw new SharedMemoryException('Segment size must be greater than zero');
+        }
+
         $this->resource = shm_attach($key, $memsize, $perm);
     }
 
+    /**
+        *@todo On warning, returns false. The correct is "NULL"
+        * @param int $variable_key
+    */
     public function get($variable_key)
     {
-        return shm_get_var($this->getResource(), $variable_key);
+        return @shm_get_var($this->getResource(), $variable_key);
     }
 
     /**
@@ -44,7 +62,7 @@ class SharedMemory
 
         if ($boolean === false) {
 
-            throw new PutVariableException('Failure while put variable ' . $variable_key);
+            throw new SharedMemoryException('Failure while put variable ' . $variable_key);
         }
 
         return $this;
@@ -56,21 +74,40 @@ class SharedMemory
     */
     public function remove($variable_key)
     {
-        $result = shm_remove_var($this->getResource(), $variable_key);
+        return @shm_remove_var($this->getResource(), $variable_key);
+    }
+
+
+    public function destroy()
+    {
+        @shm_remove($this->getResource());
 
         $this->resource = null;
 
-        return $result;
+        return $this;
     }
 
-    public function getResource()
+    /**
+     * Gets the resource of current shared memory
+     *
+     * @throws \PHPLegends\Semaphore\Exceptions\SharedMemoryException
+     * @return resource
+    */
+
+    protected function getResource()
     {
         if ($this->resource === null) {
 
-            throw new \RunTimeException('Shared Memory has been removed!');
+            throw new SharedMemoryException('Shared Memory has been removed!');
         }
 
         return $this->resource;
+    }
+
+
+    public function __destruct()
+    {
+        is_resource($this->resource) && shm_detach($this->getResource());
     }
 
     

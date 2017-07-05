@@ -15,7 +15,7 @@
     },
     "autoload" : {
         "psr-4" : {
-            "PHPLegeds\\Semaphore\\" : "src/"
+            "PHPLegends\\Semaphore\\" : "src/"
         }
     }
 }
