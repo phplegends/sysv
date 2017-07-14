@@ -1,5 +1,5 @@
 {
-    "name": "phplegends/semaphore",
+    "name": "phplegends/sysv",
     "description": "This library is a API This for PHP module that provides wrappers for the System V IPC family of functions. It includes semaphores, shared memory and inter-process messaging (IPC).",
     "type": "library",
     "license": "MIT",
@@ -15,7 +15,7 @@
     },
     "autoload" : {
         "psr-4" : {
-            "PHPLegends\\Semaphore\\" : "src/"
+            "PHPLegends\\SysV\\" : "src/"
         }
     }
 }
