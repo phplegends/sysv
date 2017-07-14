@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPLegends\SysV\SharedMemory;
+namespace PHPLegends\SysV;
 
 use PHPLegends\SysV\Exceptions\SharedMemoryException;
 
