@@ -1,7 +1,7 @@
 <?php
 
-use PHPLegends\Semaphore\Exceptions\SharedMemoryException;
-use PHPLegends\Semaphore\SharedMemory\SharedMemory;
+use PHPLegends\SysV\Exceptions\SharedMemoryException;
+use PHPLegends\SysV\SharedMemory\SharedMemory;
 use PHPUnit\Framework\TestCase;
 
 class SharedMemoryTest extends TestCase

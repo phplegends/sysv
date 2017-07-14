@@ -1,8 +1,8 @@
 <?php
 
-namespace PHPLegends\Semaphore\SharedMemory;
+namespace PHPLegends\SysV\SharedMemory;
 
-use PHPLegends\Semaphore\Exceptions\SharedMemoryException;
+use PHPLegends\SysV\Exceptions\SharedMemoryException;
 
 class SharedMemory
 {

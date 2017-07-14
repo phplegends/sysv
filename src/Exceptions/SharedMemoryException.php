@@ -1,5 +1,5 @@
 <?php
 
-namespace PHPLegends\Semaphore\Exceptions;
+namespace PHPLegends\SysV\Exceptions;
 
 class SharedMemoryException extends Exception {}
