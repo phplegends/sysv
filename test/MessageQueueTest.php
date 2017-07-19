@@ -29,12 +29,12 @@ class MessageQueueTest extends TestCase
     }
 
 
-    public function testDestroyOnDestruct()
+    public function testRemoveOnDestruct()
     {
 
         $this->assertTrue(MessageQueue::exists($this->key));
 
-        $this->mq->destroyOnDestruct();
+        $this->mq->removeOnDestruct();
 
         unset($this->mq);
 

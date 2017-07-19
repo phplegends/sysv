@@ -11,11 +11,13 @@ class MessageQueue
 
     protected $key;
 
-    protected $destroyOnDestruct = false;
+    protected $removeOnDestruct = false;
 
     public function __construct($key, $perms = 0666)
     {
         $this->resource = msg_get_queue($key, $perms);
+
+        $this->key = $key;
     }
 
 
@@ -101,13 +103,18 @@ class MessageQueue
         return $this;
     }
 
-    public function destroyOnDestruct()
+    public function removeOnDestruct()
     {
-        $this->destroyOnDestruct = true;
+        $this->removeOnDestruct = true;
+
+        return $this;
     }
+
+
+
 
     public function __destruct()
     {
-        $this->destroyOnDestruct && $this->destroy();
+        $this->removeOnDestruct && $this->destroy();
     }
 }
