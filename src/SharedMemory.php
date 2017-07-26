@@ -4,14 +4,17 @@ namespace PHPLegends\SysV;
 
 use PHPLegends\SysV\Exceptions\SharedMemoryException;
 
+/**
+ * Shared Memory
+ *
+ * @author Wallace de Souza Vizerra <wallacemaxters@gmail.com>
+*/
 class SharedMemory
 {
     /**
      * @var resource
     */
     protected $resource = null;
-
-    protected $attach;
 
     /**
      * @param int $key
@@ -31,8 +34,9 @@ class SharedMemory
     }
 
     /**
-        *@todo On warning, returns false. The correct is "NULL"
-        * @param int $variable_key
+      * @todo On warning, returns false. The correct is "NULL"
+      * @param int $variable_key
+      * @return mixed
     */
     public function get($variable_key)
     {
@@ -69,15 +73,21 @@ class SharedMemory
     }
 
     /**
-    * @param int $variable_key
-    * @return self
+      * Remove variable in shared memory
+      *
+      * @param int $variable_key
+      * @return self
     */
     public function remove($variable_key)
     {
         return @shm_remove_var($this->getResource(), $variable_key);
     }
 
-
+    /**
+      * Destroy shared memory
+      *
+      * @return self
+    */
     public function destroy()
     {
         @shm_remove($this->getResource());
@@ -93,7 +103,6 @@ class SharedMemory
      * @throws \PHPLegends\Semaphore\Exceptions\SharedMemoryException
      * @return resource
     */
-
     protected function getResource()
     {
         if ($this->resource === null) {
@@ -103,12 +112,12 @@ class SharedMemory
 
         return $this->resource;
     }
-
-
+  
+    /**
+      * @return void
+    */
     public function __destruct()
     {
         is_resource($this->resource) && shm_detach($this->getResource());
     }
-
-    
 }
