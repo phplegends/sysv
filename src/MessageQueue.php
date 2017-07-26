@@ -54,6 +54,8 @@ class MessageQueue
     }
   
     /**
+     * Send data to message queue
+     *
      * @param int $msgtype
      * @param mixed $message
      * @param boolean $serialize
@@ -74,6 +76,7 @@ class MessageQueue
   
     /**
      * Send raw data, without serialize
+     *
      * @param int $msgtype
      * @param string $message
      * @param boolean $blocking
@@ -82,8 +85,17 @@ class MessageQueue
     {
         return $this->send($msgtype, $message, false, $blocking);
     }
-  
     
+    /**
+     * Receive data
+     *
+     * @throws \PHPLegends\SysV\Exceptions\Exception
+     * @param int $desiredType
+     * @param int $maxsize
+     * @param boolean $unserialize
+     * @param int $flags
+     * @return array
+    */
     public function receive($desiredType, $maxsize, $unserialize = true, $flags = 0)
     {
 
