@@ -16,6 +16,12 @@ class SharedMemory
     */
     protected $resource = null;
 
+
+    /**
+    * @var boolean
+    */
+    protected $removeOnDestruct = false;
+
     /**
      * @param int $key
      * @param int $memsize
@@ -118,6 +124,20 @@ class SharedMemory
     */
     public function __destruct()
     {
-        is_resource($this->resource) && shm_detach($this->getResource());
+        $this->removeOnDestruct && $this->destroy();
+    }
+
+
+    /**
+     * Mark as remove on destruct
+     * @param boolean $removeOnDestruct
+     * @return self
+    */
+
+    public function removeOnDestruct($removeOnDestruct = true)
+    {
+        $this->removeOnDestruct = $removeOnDestruct;
+
+        return $this;
     }
 }
