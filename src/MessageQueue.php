@@ -85,6 +85,7 @@ class MessageQueue
      * @param int $msgtype
      * @param string $message
      * @param boolean $blocking
+     * @return self
     */
     public function sendRaw($msgtype, $message, $blocking = true)
     {
@@ -92,7 +93,12 @@ class MessageQueue
     }
 
     /**
-     * 
+     * Send json data to message queue
+     *
+     * @param int $msgtype
+     * @param mixed $data
+     * @param boolean $blocking
+     * @return self
     */
 
     public function sendJson($msgtype, $data, $blocking = true)
