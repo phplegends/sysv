@@ -25,6 +25,11 @@ class MessageQueue
       * @var boolean
     */
     protected $removeOnDestruct = false;
+
+    /**
+     * @var int 
+    */
+    protected $defaultMaxSizeReceived = 4096;
   
     /**
      * 
@@ -85,26 +90,36 @@ class MessageQueue
     {
         return $this->send($msgtype, $message, false, $blocking);
     }
+
+    /**
+     * 
+    */
+
+    public function sendJson($msgtype, $data, $blocking = true)
+    {
+        return $this->sendRaw($msgtype, json_encode($data), $blocking);
+    }
     
     /**
      * Receive data
      *
      * @throws \PHPLegends\SysV\Exceptions\Exception
      * @param int $desiredType
-     * @param int $maxsize
+     * @param int|null $maxsize
      * @param boolean $unserialize
      * @param int $flags
      * @return array
     */
-    public function receive($desiredType, $maxsize, $unserialize = true, $flags = 0)
+    public function receive($desiredType = 0, $maxsize = null, $unserialize = true, $flags = 0)
     {
 
         $message = null;
 
-        $msgtype = null;
+        $type = null;
+
+        $maxsize ?: $maxsize = $this->defaultMaxSizeReceived;
 
         $received = msg_receive($this->getResource(), $desiredType, $type, $maxsize, $message, $unserialize, $flags, $error);
-
 
         if ($received === false) {
 
@@ -115,9 +130,23 @@ class MessageQueue
     }
 
 
-    public function receiveRaw($desiredmsgtype, $maxsize, $flags = 0)
+    public function receiveRaw($desiredmsgtype = 0, $maxsize = null, $flags = 0)
     {
-        return $this->receive($desiredmsgtype, $maxSize, false, $flags);
+        return $this->receive($desiredmsgtype, $maxsize, false, $flags);
+    }
+
+
+    public function receiveJson($desiredmsgtype = 0, $maxsize = null, $flags = 0, $useArray = true)
+    {
+        $result = $this->receiveRaw($desiredmsgtype, $maxsize, $flags);
+
+        $data = json_decode($result['message'], $useArray);
+
+        $result[0] = $data;
+        $result['message'] = $data;
+
+        return $result;
+
     }
 
     /**
@@ -169,6 +198,20 @@ class MessageQueue
     public function removeOnDestruct($removeOnDestruct = true)
     {
         $this->removeOnDestruct = $removeOnDestruct;
+
+        return $this;
+    }
+
+
+    /**
+     * Set Default max size
+     *
+     * @param int $defaultMaxSizeReceive
+     * @return self
+    */
+    public function setDefaultMaxSizeReceived($size)
+    {
+        $this->defaultMaxSizeReceived = $size;
 
         return $this;
     }
