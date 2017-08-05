@@ -136,12 +136,29 @@ class MessageQueue
     }
 
 
+    /**
+     * Receives the data without serialization
+     * 
+     * @param int $desiredmsgtype
+     * @param int|null $maxsize
+     * @param int $flags
+     * @return string
+     * */
     public function receiveRaw($desiredmsgtype = 0, $maxsize = null, $flags = 0)
     {
         return $this->receive($desiredmsgtype, $maxsize, false, $flags);
     }
 
 
+    /**
+     * Receives the data without serialization
+     * 
+     * @param int $desiredmsgtype
+     * @param int|null $maxsize
+     * @param int $flags
+     * @param boolean $useArray
+     * @return string
+     * */
     public function receiveJson($desiredmsgtype = 0, $maxsize = null, $flags = 0, $useArray = true)
     {
         $result = $this->receiveRaw($desiredmsgtype, $maxsize, $flags);
